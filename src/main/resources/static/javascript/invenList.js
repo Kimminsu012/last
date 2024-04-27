@@ -25,23 +25,31 @@ $(function() {
             invenStatusSelect.find("option:not(:selected)").hide();
             $(".code_select_box option[value*='직접 입력']").hide();
             $(".basic_text").show();
-            $("#count").prop("readonly", false);
+            $("#count").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
             $("#cash").prop("readonly", true);
             $("#itemL").prop("readonly", true);
             $("#idClass").prop("readonly", true);
             $("#idCode").prop("readonly", true);
             $("#itemNm").prop("readonly", true);
+            $(".sellCash").val('0');
         } else if (operationType === "판매") {
             invenStatusSelect.val("SELL");
             invenStatusSelect.find("option:not(:selected)").hide();
             $(".code_select_box option[value*='직접 입력']").hide();
             $(".basic_text").show();
-            $("#count").prop("readonly", false);
+            $("#count").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
             $("#cash").prop("readonly", true);
             $("#itemL").prop("readonly", true);
             $("#idClass").prop("readonly", true);
             $("#idCode").prop("readonly", true);
             $("#itemNm").prop("readonly", true);
+            $(".buyCash").val('0');
         } else if (operationType === "작성") {
             invenStatusSelect.val("BASIC");
             invenStatusSelect.find("option:not(:selected)").hide();
@@ -49,11 +57,26 @@ $(function() {
             $(".code_select_box option[value*='직접 입력']").show();
             $(".basic_text").show();
             $("#count").prop("readonly", true);
-            $("#cash").prop("readonly", false);
-            $("#itemL").prop("readonly", false);
-            $("#idClass").prop("readonly", false);
-            $("#idCode").prop("readonly", false);
-            $("#itemNm").prop("readonly", false);
+            $("#cash").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
+            $("#itemL").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
+            $("#idClass").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
+            $("#idCode").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
+            $("#itemNm").prop("readonly", false).on("keydown",function(){
+                if(event.key === "Enter")
+                    event.preventDefault();
+            });
         }
     });
 
@@ -166,14 +189,14 @@ function handleCodeSelection(select) {
     var selectedCode = select.value;
     var idx = 0;
     if (selectedCode !== "직접 입력") {
-        $(".idCode-list").each(function (i, v) {
+        $(".itemNm-list").each(function (i, v) {
             if ($(this).text() === $(".code_select_box").val()) {
                 idx = i;
                 return false;
             }
         });
         $("#id").val($(".idClass-list").eq(idx).attr("data-id"));
-        $("#itemNm").val($(".itemNm-list").eq(idx).text());
+        $("#itemNm").val(selectedCode);
         $("#idClass").val($(".idClass-list").eq(idx).text());
         $("#itemL").val($(".itemL-list").eq(idx).text());
         $("#cash").val($(".cash-list").eq(idx).text());
@@ -199,7 +222,7 @@ function handleCodeSelection(select) {
                 }
             }
         });
-        $("#idCode").val(selectedCode);
+        $("#idCode").val($(".idCode-list").eq(idx).text());
 
         selectInput.style.display = "none";
     } else {
@@ -207,9 +230,11 @@ function handleCodeSelection(select) {
         $(".inven_class input").val('');
         $(".inven_l input").val('');
         $(".result_n input").val('0');
-        $(".inven_nm input").val('').focus();
-        $(".selectInput").val('');
+        $(".inven_nm input").val('');
+        $(".selectInput").val('').focus();
         $(".cash_n input").val('');
+        $(".sellCash").val('0');
+        $(".buyCash").val('0');
 
         // 작성완료 버튼 비활성화
         $(".modal_bt").hide();
